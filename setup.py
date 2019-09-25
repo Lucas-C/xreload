@@ -10,7 +10,7 @@ with open(join(dirname(__file__), 'README.md')) as f:
 
 setup(
     name='xreload',
-    version='1.0.0',
+    version='1.0.1',
     description='Provide modules hot-reloading',
     long_description=long_description,
     long_description_content_type='text/markdown',

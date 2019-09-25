@@ -37,12 +37,11 @@
 >>> Cbar()
 42 42
 """
+# pylint: disable=global-statement
 
 import os
-import sys
 import shutil
-import doctest
-from xreload import xreload
+import sys
 import tempfile
 
 SAMPLE_CODE = """
@@ -76,7 +75,7 @@ def tearDown(unused=None):
     if TEMPDIR is not None:
         shutil.rmtree(TEMPDIR)
         TEMPDIR = None
-        
+
 
 def make_mod(name="x", repl=None, subst=None):
     if not TEMPDIR:

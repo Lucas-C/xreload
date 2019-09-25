@@ -48,7 +48,7 @@ def xreload(mod, new_annotations=None):
     code = _extract_code(mod)
     if code is None:
         # Fall back to built-in reload()
-        return reload_module(mod)
+        return reload(mod)
     # Execute the code.  We copy the module dict to a temporary; then
     # clear the module dict; then execute the new code in the module
     # dict; then swap things back and around.  This trick (due to
