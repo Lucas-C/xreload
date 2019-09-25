@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+disable = attribute-defined-outside-init, import-error, invalid-name, missing-docstring, unused-argument
+
+[FORMAT]
+max-line-length = 155
