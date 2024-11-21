@@ -24,13 +24,15 @@ Some of the many limitiations include:
   correctly
 
 - Classes involving __slots__ are not handled correctly
+
+Portions of this file are derived from plone.reload, Copyright (C) 2008-2017 Hanno Schlichting
+Licensed under the BSD 3-Clause License (see LICENSE for details).
+
 """
 
-import imp
-from importlib import reload
+from importlib import reload, util
 import inspect
 import sys
-
 
 CLASS_STATICS = frozenset(("__dict__", "__doc__", "__module__", "__weakref__"))
 
@@ -72,34 +74,49 @@ def xreload(mod, new_annotations=None):
 
 
 def _extract_code(mod):
+    """
+    Finds the module spec and uses its loader to return a code object
+    https://docs.python.org/3.11/glossary.html#term-module-spec
+    """
+    # get the module name
     modname = mod.__name__
-    if modname == '__main__':
-        stream, filename, kind = open(mod.__file__), mod.__file__, imp.PY_SOURCE
+
+    # Parse it into package name and module name, e.g. 'foo.bar' and
+    # 'whatever'
+    i = modname.rfind(".")
+    if i >= 0:
+        pkgname, modname = modname[:i], modname[i + 1 :]
     else:
         pkgname = None
-        i = modname.rfind(".")
-        if i >= 0:
-            pkgname, modname = modname[:i], modname[i+1:]
-        # Compute the search path
-        if pkgname:
-            # We're not reloading the package, only the module in it
-            path = sys.modules[pkgname].__path__  # Search inside the package
-        else:
-            # Search the top-level module path
-            path = None  # Make find_module() uses the default search path
-        # Find the module; may raise ImportError
-        stream, filename, (_, _, kind) = imp.find_module(modname, path)
-    # Turn it into a code object
+    # Compute the search path
+    if pkgname:
+        # We're not reloading the package, only the module in it
+        pkg = sys.modules[pkgname]
+    else:
+        # Search the top-level module path
+        pkg = None
+    package_name = pkg.__name__ if pkg else None
+    specs = util.find_spec(mod.__name__, package=package_name)
+    filename = specs.origin
+
     try:
-        # Is it Python source code or byte code read from a file?
-        if kind not in (imp.PY_COMPILED, imp.PY_SOURCE):
+        if specs.has_location:
+            with open(filename, "rb") as stream:
+                source = stream.read()
+                # per plone.reload: if we don't strip the source code and add newline we
+                # get a SyntaxError even if `python $filename` is perfectly
+                # happy.
+                source = source.strip() + b"\n"
+                code = compile(source, filename, "exec")
+
+                return code
+        else:
+            print(f"Error: Could not find a valid spec for {mod.__name__}")
             return None
-        source = stream.read().strip() + '\n'
-        code = compile(source, filename, "exec")
-        return code
-    finally:
-        if stream:
-            stream.close()
+    except Exception as e:
+        print(f"Error extracting code for module {mod.__name__}: {e}")
+        return None
+
 
 
 def _update_scope(oldscope, newscope):
