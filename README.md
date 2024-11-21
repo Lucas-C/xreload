@@ -10,8 +10,8 @@ It also re-use some changes to this code made on the `plone.reload` package:
 
 ## License
 
-Neither Guido's original code nor `plone.reload` code has any specific license,
-so none is provided with this package.
+Portions of this code are derived from plone.reload, Copyright (C) 2008-2017 Hanno Schlichting.
+Licensed under the BSD 3-Clause License. See LICENSE for details.
 
 ## Usage
 
