@@ -26,7 +26,7 @@ Some of the many limitiations include:
 - Classes involving __slots__ are not handled correctly
 """
 
-import imp
+import imp  # pylint: disable=deprecated-module
 from importlib import reload
 import inspect
 import sys
@@ -74,7 +74,8 @@ def xreload(mod, new_annotations=None):
 def _extract_code(mod):
     modname = mod.__name__
     if modname == '__main__':
-        stream, filename, kind = open(mod.__file__), mod.__file__, imp.PY_SOURCE
+        # pylint: disable=consider-using-with
+        stream, filename, kind = open(mod.__file__, encoding='utf-8'), mod.__file__, imp.PY_SOURCE
     else:
         pkgname = None
         i = modname.rfind(".")
