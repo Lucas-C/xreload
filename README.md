@@ -1,4 +1,4 @@
-[![pypi\_version\_img](https://img.shields.io/pypi/v/xreload.svg?style=flat)](https://pypi.python.org/pypi/xreload) [![Supported Python versions](https://img.shields.io/pypi/pyversions/xreload.svg)](https://pypi.python.org/pypi/xreload) [![travis\_build\_status](https://travis-ci.org/Lucas-C/xreload.svg?branch=master)](https://travis-ci.org/Lucas-C/xreload)
+[![pypi\_version\_img](https://img.shields.io/pypi/v/xreload.svg?style=flat)](https://pypi.python.org/pypi/xreload) [![Supported Python versions](https://img.shields.io/pypi/pyversions/xreload.svg)](https://pypi.python.org/pypi/xreload) [![build status](https://github.com/Lucas-C/xreload/workflows/build/badge.svg)](https://github.com/Lucas-C/xreload/actions?query=branch%3Amaster)
 
 # xreload
 

@@ -85,5 +85,5 @@ def make_mod(name="x", repl=None, subst=None):
     sample = SAMPLE_CODE
     if repl is not None and subst is not None:
         sample = sample.replace(repl, subst)
-    with open(fn, "w") as f:
+    with open(fn, "w", encoding="utf-8") as f:
         f.write(sample)

@@ -5,12 +5,12 @@ from os.path import basename, dirname, join, splitext
 from setuptools import find_packages, setup
 
 
-with open(join(dirname(__file__), 'README.md')) as f:
+with open(join(dirname(__file__), 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
     name='xreload',
-    version='1.0.1',
+    version='1.0.2',
     description='Provide modules hot-reloading',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -29,7 +29,10 @@ setup(
         'Operating System :: Microsoft :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Utilities',
