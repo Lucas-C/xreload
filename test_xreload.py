@@ -35,7 +35,17 @@
 >>> # Limitation: variables referencing class methods
 >>> Cbar()
 42 42
->>> # Testing new_annotations usage:
+"""
+
+import os
+import shutil
+import sys
+import tempfile
+
+# Also tests annotations usage for Python >=3.10:
+if sys.version_info >= (3, 10):
+    __doc__ +=\
+"""
 >>> make_mod(CODE_FOR_MAIN_MODULE)
 >>> xreload(x) and 'OK'
 'OK'
@@ -46,11 +56,6 @@
 >>> x.__annotations__
 {'XRELOADED': True}
 """
-
-import os
-import shutil
-import sys
-import tempfile
 
 CODE_FOR_MODULE_WITH_CLASS_C = """
 class C:
