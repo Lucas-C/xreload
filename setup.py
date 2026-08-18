@@ -10,7 +10,7 @@ with open(join(dirname(__file__), 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='xreload',
-    version='1.0.2',
+    version='1.1.0',
     description='Provide modules hot-reloading',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -23,7 +23,6 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
         'Operating System :: Unix',
         'Operating System :: POSIX',
         'Operating System :: Microsoft :: Windows',
@@ -33,6 +32,9 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
         'Topic :: Utilities',

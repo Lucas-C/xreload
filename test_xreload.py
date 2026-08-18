@@ -1,7 +1,6 @@
 """Doctests for module reloading.
 
 >>> from xreload import xreload
->>> from test_xreload import make_mod
 >>> make_mod()
 >>> import x
 >>> C = x.C
@@ -36,15 +35,24 @@
 >>> # Limitation: variables referencing class methods
 >>> Cbar()
 42 42
+>>> # Testing new_annotations usage:
+>>> make_mod(CODE_FOR_MAIN_MODULE)
+>>> xreload(x) and 'OK'
+'OK'
+>>> import x
+>>> x.__annotations__
+{}
+>>> x.reload_with_new_annots()
+>>> x.__annotations__
+{'XRELOADED': True}
 """
-# pylint: disable=global-statement
 
 import os
 import shutil
 import sys
 import tempfile
 
-SAMPLE_CODE = """
+CODE_FOR_MODULE_WITH_CLASS_C = """
 class C:
     def foo(self):
         print(42)
@@ -56,33 +64,26 @@ class C:
         print (42, 42, 42)
 """
 
-TEMPDIR = None
-SAVE_PATH = None
+CODE_FOR_MAIN_MODULE = """
+import sys
+from xreload import xreload
 
+def reload_with_new_annots():
+    xreload(sys.modules[__name__], new_annotations={"XRELOADED": True})
+"""
 
-def setUp(unused=None):
-    global TEMPDIR, SAVE_PATH
-    TEMPDIR = tempfile.mkdtemp()
-    SAVE_PATH = list(sys.path)
-    sys.path.append(TEMPDIR)
+TEMPDIR = tempfile.mkdtemp()
+SAVE_PATH = list(sys.path)
+sys.path.append(TEMPDIR)
 
 
 def tearDown(unused=None):
-    global TEMPDIR, SAVE_PATH
-    if SAVE_PATH is not None:
-        sys.path = SAVE_PATH
-        SAVE_PATH = None
-    if TEMPDIR is not None:
-        shutil.rmtree(TEMPDIR)
-        TEMPDIR = None
+    sys.path = SAVE_PATH
+    shutil.rmtree(TEMPDIR)
 
 
-def make_mod(name="x", repl=None, subst=None):
-    if not TEMPDIR:
-        setUp()
-        assert TEMPDIR
-    fn = os.path.join(TEMPDIR, name + ".py")
-    sample = SAMPLE_CODE
+def make_mod(sample=CODE_FOR_MODULE_WITH_CLASS_C, repl=None, subst=None):
+    fn = os.path.join(TEMPDIR, "x.py")
     if repl is not None and subst is not None:
         sample = sample.replace(repl, subst)
     with open(fn, "w", encoding="utf-8") as f:
