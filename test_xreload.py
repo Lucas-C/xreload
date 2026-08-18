@@ -35,6 +35,10 @@
 >>> # Limitation: variables referencing class methods
 >>> Cbar()
 42 42
+>>> make_mod(CODE_FOR_MAIN_MODULE)
+>>> # Testing xreload usage in a __main__ script:
+>>> import subprocess
+>>> subprocess.check_call([sys.executable, TEMPDIR + '/x.py'])
 """
 
 import os
@@ -46,7 +50,6 @@ import tempfile
 if sys.version_info >= (3, 10):
     __doc__ +=\
 """
->>> make_mod(CODE_FOR_MAIN_MODULE)
 >>> xreload(x) and 'OK'
 'OK'
 >>> import x
@@ -75,6 +78,9 @@ from xreload import xreload
 
 def reload_with_new_annots():
     xreload(sys.modules[__name__], new_annotations={"XRELOADED": True})
+
+if __name__ == '__main__':
+    reload_with_new_annots()
 """
 
 TEMPDIR = tempfile.mkdtemp()
